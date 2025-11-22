@@ -1,0 +1,30 @@
+---
+name: Python Black
+
+on:
+  push: null
+  pull_request: null
+
+jobs:
+  lint:
+    name: Python Black Lint
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+      
+      - name: Run Python Black Linter
+        uses: psf/black@stable
+        continue-on-error: true
+        with:
+          options: "--check --diff"
+          src: "."
+      
+      - name: Run Bandit Scanner
+        uses: reactive-firewall/python-bandit-scan@v2.3
+        with:
+          path: "."
+          level: low
+          confidence: low
+          exit_zero: true
